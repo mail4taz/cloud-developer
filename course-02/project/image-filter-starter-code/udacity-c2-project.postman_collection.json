@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "1f7e3b87-c66a-442c-8f6a-10addda423e8",
+		"name": "udacity-c2-project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET filterImage",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/filteredimage?image_url=http://www.pngall.com/wp-content/uploads/2016/03/Butterfly-PNG-5.png",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "http://www.pngall.com/wp-content/uploads/2016/03/Butterfly-PNG-5.png"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "294c4450-c5cf-4f5b-beac-ca729d87a7c6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f866b17d-00bc-4ecf-9da0-558790194f41",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "65130ab0-2496-4337-8b85-2ae246a2a0ce",
+			"key": "host",
+			"value": "http://localhost:8082",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
