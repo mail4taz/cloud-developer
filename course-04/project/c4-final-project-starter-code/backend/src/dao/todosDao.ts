@@ -24,7 +24,7 @@ export class TodosDao {
             ExpressionAttributeValues: {
                 ':user': userId
             },
-            ProjectionExpression: 'todoId, #n, createdAt, dueDate, done',
+            ProjectionExpression: 'todoId, #n, createdAt, dueDate, done, attachmentUrl',
             ExpressionAttributeNames: {
                 "#n": "name"
             }
@@ -90,6 +90,22 @@ export class TodosDao {
                 ':name': updateItem.name,
                 ':done': updateItem.done,
                 ':date': updateItem.dueDate
+            }
+        }).promise()
+    }
+
+    async attachImage(todoItem:TodoItem, filename: string) {
+        this.logger.info(`Attachinig image to todo with id ${todoItem.todoId}`)
+
+        await this.docClient.update({
+            TableName: this.todosTable,
+            Key: {
+                userId: todoItem.userId,
+                todoId: todoItem.todoId
+            },
+            UpdateExpression: 'SET attachmentUrl=:filename',
+            ExpressionAttributeValues: {
+                ':filename': filename
             }
         }).promise()
     }
