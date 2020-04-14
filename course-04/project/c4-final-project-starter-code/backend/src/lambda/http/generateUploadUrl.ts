@@ -2,7 +2,7 @@
 import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
-import { getTodo } from '../../businessLogic/todos'
+import { addImage } from '../../businessLogic/todos'
 import { getUserFromToken } from '../../auth/utils'
 
 const AWS = require('aws-sdk')
@@ -16,11 +16,13 @@ const s3 = new AWS.S3({
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId
+  const filename = `img-${todoId}`
 
   let userId: string
   userId = getUserFromToken(event.headers.Authorization)
 
-  let aItem = await getTodo(todoId, userId)
+  const getPath = getGetSignedUrl(filename)
+  let aItem = await addImage(todoId, userId, getPath)
   if (!aItem) {
     return {
       statusCode: 404,
@@ -38,7 +40,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify({
-        uploadUrl: getPutSignedUrl(`img-${todoId}`)
+        uploadUrl: getPutSignedUrl(filename)
       })
     }
 } 
@@ -49,7 +51,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 * @Returns:
 *    a url as a string
 */
-/*
 function getGetSignedUrl( key: string): string {
   const url = s3.getSignedUrl('getObject', {
       Bucket: imagesBucket,
@@ -59,7 +60,6 @@ function getGetSignedUrl( key: string): string {
 
   return url;
 }
-*/
 
 /* getPutSignedUrl generates an aws signed url to put an item
 * @Params

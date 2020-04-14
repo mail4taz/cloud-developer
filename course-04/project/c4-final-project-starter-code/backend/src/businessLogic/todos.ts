@@ -52,12 +52,20 @@ export async function updateTodo(todoId: string, currentUser: string, updatedTod
     if (!itemToUpdate) {
         return
     }
-    console.log(itemToUpdate)
     const updatedTodo = updatedTodoReq as TodoUpdate
-    console.log(updatedTodo)
     await todosDao.updateTodo(itemToUpdate, updatedTodo)
 
     itemToUpdate = {...updatedTodo} as TodoItem
-    console.log(itemToUpdate)
+    return itemToUpdate
+}
+
+export async function addImage(todoId: string, currentUser: string, filename: string): Promise<TodoItem> {
+    let itemToUpdate = await getTodo(todoId, currentUser)
+    if (!itemToUpdate) {
+        return
+    }
+
+    await todosDao.attachImage(itemToUpdate, filename)
+
     return itemToUpdate
 }
