@@ -19,6 +19,9 @@ provider:
     TODO_BY_DATE_IDX: CreatedAtIdx
     TODO_BY_DONE_IDX: DoneIdx
 
+#An example of how you can define parameters using the SSM parameter store, you can define as many parameters as you want, encrypt those and then retrieve the param like this: ref
+#AUTH_0_SECRET: ${ssm:THE_NAME_OF_YOUR_PARAMETER}
+
 package:
   excludeDevDependencies: true
 #  individually: true    

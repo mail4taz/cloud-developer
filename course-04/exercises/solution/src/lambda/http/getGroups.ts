@@ -1,36 +1,16 @@
-/*const data = [
-    {
-        "id": 1,
-        "name": "Dogs",
-        "description": "only dog images"
-    },
-    {
-        "id": 2,
-        "name": "Cats",
-        "description": "only cat images"        
-    },
-    {
-        "id": 3,
-        "name": "Other",
-        "description": "other images"        
-    }
-];*/
+import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import 'source-map-support/register';
+import { getAllGroups } from "../../businessLogic/groups"
 
-const AWS = require('aws-sdk')
-
-const docClient = new AWS.DynamoDB.DocumentClient()
-
-const groupsTable = process.env.GROUPS_TABLE
-
-exports.handler = async (event) => {
-  console.log('Processing event: ', event)
+export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  //console.log('Processing event: ', event)
 
   // TODO: Read and parse "limit" and "nextKey" parameters from query parameters
-  let nextKey = getQueryParameter(event,"nextKey") // Next key to continue scan operation if necessary
-  let limit = getQueryParameter(event,"limit") // Maximum number of elements to return
+  //let nextKey = getQueryParameter(event,"nextKey") // Next key to continue scan operation if necessary
+  //let limit = getQueryParameter(event,"limit") // Maximum number of elements to return
 
   // TODO: Return 400 error if parameters are invalid
-  if (!limit)
+  /*if (!limit)
   {
       return {
         statusCode: 400,
@@ -39,22 +19,10 @@ exports.handler = async (event) => {
         },
         body: "Please provide \"limit\" parameter to fetch results"
       }
-  }
-
-  // Scan operation parameters
-  const scanParams = {
-    TableName: groupsTable,
-    // TODO: Set correct pagination parameters
-    Limit: limit,
-    ExclusiveStartKey: nextKey ? JSON.parse(decodeURIComponent(nextKey)) : null
-  }
-  console.log('Scan params: ', scanParams)
-
-  const result = await docClient.scan(scanParams).promise()
-
-  const items = result.Items
-
-  console.log('Result: ', result)
+  }*/
+  
+  const items = await getAllGroups()
+  console.log('Result: ', items)
 
   // Return result
   return {
@@ -63,9 +31,9 @@ exports.handler = async (event) => {
       'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
-      items,
+      items
       // Encode the JSON object so a client can return it in a URL as is
-      nextKey: encodeNextKey(result.LastEvaluatedKey)
+      //nextKey: encodeNextKey(result.LastEvaluatedKey)
     })
   }
 }
